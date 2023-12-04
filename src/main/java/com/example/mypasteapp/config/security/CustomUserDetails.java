@@ -2,24 +2,22 @@ package com.example.mypasteapp.config.security;
 
 import com.example.mypasteapp.model.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class UserInfo implements UserDetails {
+public class CustomUserDetails extends User implements UserDetails {
 
+    private String username;
+    private String password;
+    Collection<? extends GrantedAuthority> authorities;
 
-    private final String username;
-    private final String password;
-    private List<GrantedAuthority> authorities;
-
-    public UserInfo(User userInfo) {
-        username = userInfo.getUsername();
-        password = userInfo.getPassword();
+    public CustomUserDetails(User byUsername) {
+        this.username = byUsername.getUsername();
+        this.password= byUsername.getPassword();
+        List<GrantedAuthority> auths = new ArrayList<>();
     }
 
     @Override

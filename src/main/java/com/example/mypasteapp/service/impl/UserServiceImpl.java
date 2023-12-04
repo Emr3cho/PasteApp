@@ -1,5 +1,6 @@
 package com.example.mypasteapp.service.impl;
 
+import com.example.mypasteapp.dao.MyPasteRepository;
 import com.example.mypasteapp.dao.UserRepository;
 import com.example.mypasteapp.model.DTO.UserDTO;
 import com.example.mypasteapp.model.DTO.requests.UpdateUserRequest;
@@ -14,14 +15,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final MyPasteRepository myPasteRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, MyPasteRepository myPasteRepository) {
         this.userRepository = userRepository;
+        this.myPasteRepository = myPasteRepository;
     }
 
     @Override
@@ -60,6 +64,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserById(int userId) {
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public void saveUserFavorite(int userId, UUID pasteId) {
+        User user = this.findUserEntityById(userId);
+        MyPaste paste = myPasteRepository.findById(pasteId).get();
+        user.getFavorites().add(paste);
+        userRepository.save(user);
     }
 
 

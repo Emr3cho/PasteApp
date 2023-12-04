@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.example.mypasteapp.model.User;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +24,8 @@ public class MyPaste {
 	private Instant lastUpdatedOn;
 	@ManyToOne
 	private User user;
+	@OneToMany
+	List<Comment> comments = new ArrayList<>();
 
 	@ManyToMany(mappedBy = "favorites")
 	private List<User> favoritesOwners;
@@ -82,6 +85,14 @@ public class MyPaste {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
 	public List<User> getFavoritesOwners() {

@@ -17,8 +17,6 @@ public class Comment {
     private Instant createdOn;
     @ManyToOne
     private User author;
-    @ManyToOne
-    private MyPaste paste;
 
     public Comment() {
     }
@@ -53,13 +51,5 @@ public class Comment {
 
     public void setAuthor(User author) {
         this.author = author;
-    }
-
-    public MyPaste getPaste() {
-        return paste;
-    }
-
-    public void setPaste(MyPaste paste) {
-        this.paste = paste;
     }
 }

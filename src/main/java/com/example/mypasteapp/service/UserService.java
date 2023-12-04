@@ -9,6 +9,7 @@ import com.example.mypasteapp.model.User;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface UserService {
     UserDTO findUserByUsername(String username);
@@ -18,4 +19,5 @@ public interface UserService {
     void saveNewUser(UserRequest userRequest);
     UserResponse updateUser(UpdateUserRequest updateUserRequest);
     void deleteUserById(int userId);
+    void saveUserFavorite(int userId, UUID pasteId);
 }

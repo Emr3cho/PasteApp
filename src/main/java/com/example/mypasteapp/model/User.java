@@ -17,7 +17,7 @@ public class User {
     private String password;
     private int age;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "client_favorites",
             joinColumns = {
                     @JoinColumn(name = "client_id", referencedColumnName = "id",

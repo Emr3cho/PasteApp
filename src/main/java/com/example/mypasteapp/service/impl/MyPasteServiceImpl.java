@@ -2,6 +2,7 @@ package com.example.mypasteapp.service.impl;
 
 import com.example.mypasteapp.dao.MyPasteRepository;
 import com.example.mypasteapp.model.DTO.requests.MyPasteRequest;
+import com.example.mypasteapp.model.DTO.requests.UpdateMyPasteRequest;
 import com.example.mypasteapp.model.DTO.responses.MyPasteResponse;
 import com.example.mypasteapp.model.MyPaste;
 import com.example.mypasteapp.model.User;
@@ -10,6 +11,7 @@ import com.example.mypasteapp.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class MyPasteServiceImpl implements MyPasteService {
@@ -38,9 +40,32 @@ public class MyPasteServiceImpl implements MyPasteService {
         return myPasteRepository.findAllByUserId(userId).stream().map(this::myPasteToMyPasteResponseMapper).toList();
     }
 
+    @Override
+    public MyPasteResponse updatePaste(UpdateMyPasteRequest updateUserRequest) {
+        MyPaste pasteInDB = this.getPasteEntityById(updateUserRequest.getId());
+        MyPaste updatedPaste = this.updateSavedPaste(pasteInDB, updateUserRequest);
+        return this.myPasteToMyPasteResponseMapper(updatedPaste);
+    }
+
+    @Override
+    public void deletePasteById(UUID id) {
+        myPasteRepository.deleteById(id);
+    }
+
+    public MyPaste getPasteEntityById(UUID pasteId){
+        return myPasteRepository.findById(pasteId).get();
+    }
+
     private MyPaste myPasteRequestToMyPasteMapper(MyPasteRequest myPasteRequest) {
         User user = userService.findUserEntityById(myPasteRequest.getUserId());
         return new MyPaste(myPasteRequest.getTitle(), myPasteRequest.getContent(), user);
+    }
+
+
+    private MyPaste updateSavedPaste(MyPaste myPaste, UpdateMyPasteRequest updateMyPasteRequest){
+        myPaste.setTitle(updateMyPasteRequest.getTitle());
+        myPaste.setContent(updateMyPasteRequest.getContent());
+        return myPasteRepository.save(myPaste);
     }
 
     private MyPasteResponse myPasteToMyPasteResponseMapper(MyPaste myPaste) {

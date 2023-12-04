@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -40,6 +41,12 @@ public class UserController {
     public ResponseEntity<Object> saveNewUser(@RequestBody UserRequest userRequest) {
         userService.saveNewUser(userRequest);
         return new ResponseEntity<>("new user is saved successfully!", HttpStatus.OK);
+    }
+
+    @PostMapping("/{userId}")
+    public ResponseEntity<Object> saveUserFavorite(@PathVariable int userId, @RequestParam UUID pasteId){
+        userService.saveUserFavorite(userId, pasteId);
+        return new ResponseEntity<>("successfully added paste to user with id " + userId, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
